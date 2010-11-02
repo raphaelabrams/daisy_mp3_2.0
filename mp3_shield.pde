@@ -107,7 +107,7 @@ long la, lb;
 //  while(1){;}
   set_volume(200,200);
   Serial.println("step seven");
- read_sector_to_serial(0);
+// read_sector_to_serial(0);
 
   delay(10000);
 //  for(la=10000;la<1000000;la++){
@@ -486,7 +486,7 @@ unsigned char response;
   SendSPI(check);
   for(char i = 0; i < 10; ++i){
     response =   RecSPI();
-    Serial.print(response,HEX);    Serial.print("========"); Serial.println(response,BIN);
+    Serial.print(command & 0b10111111,DEC); Serial.print(" SD_command loop returns: HEX> "); Serial.print(response,HEX); Serial.print("  BINARY> "); Serial.println(response,BIN);
     if(response != 0xff){
       return response;
     }
@@ -507,7 +507,7 @@ int sd_init(bool report){	//Initialises the sd into SPI mode and sets block size
 //char p;
 int i, ii, tries;
 unsigned char n, cmd; 
-byte ocr[4];
+byte ocr[4]={0,0,0,0};
 
   delay(30);	
   digitalWrite(SD_XCS,1);			//                    // set SD_XCS = 1 (off)
@@ -531,10 +531,10 @@ byte ocr[4];
   SD_command(0x08, 0,0,0x01,0xaa,0x87);
   for (n = 0; n < 4; n++){ 
     ocr[n] = RecSPI(); 
-    if(report){Serial.println(ocr[n],HEX);}
+    if(report){Serial.print("__OCR SAYS: "); Serial.print(ocr[n],HEX); space();}
   } /* Get trailing return value of R7 resp */
   if (ocr[2] == 0x01 && ocr[3] == 0xAA) { /* The card can work at vdd range of 2.7-3.6V */
-    if(report){Serial.println("this is sd v2"); SDHC=1;} //SDHC = 1 but it may be set back to 0 in the next test
+    if(report){Serial.println("if the pattern above is '0,0,1,AA' then this is probably sd v2, ie SDHC"); SDHC=1;} //SDHC = 1 but it may be set back to 0 in the next test
   }else{if(report){Serial.println("patterns don't match, probably not SD 2.0");}}
   SD_printabyte();
 
@@ -550,7 +550,7 @@ SD_printabyte();
   Serial.println(SDHC<<6,BIN);
 
   if (SD_command(41,SDHC<<6,0,0,0,0xFF) <= 0x01){
-    if(report){Serial.println("yes, it's an sd!");}
+    if(report){Serial.println("yes, it's an sd!");}    if(report){Serial.println("Giant Boner!");}
   }
 SD_printabyte();
 
@@ -731,7 +731,9 @@ void message (char m){
   }
 }
 
-
+void space(void){
+  Serial.print(" ");
+}
 
 
 
