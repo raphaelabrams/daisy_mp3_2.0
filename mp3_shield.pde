@@ -550,7 +550,7 @@ SD_printabyte();
   Serial.println(SDHC<<6,BIN);
 
   if (SD_command(41,SDHC<<6,0,0,0,0xFF) <= 0x01){
-    if(report){Serial.println("yes, it's an sd!");}    if(report){Serial.println("Giant Boner!");}
+    if(report){Serial.println("yes, it's an sd!");}
   }
 SD_printabyte();
 
