@@ -8,7 +8,7 @@
 
 #define MAXFILENAMELENGTH 65
 #define MAXTREE 6
-//0   serial from host
+//0   serial from host //don't need to implement these lines to make serial work, these are just for reference
 //1   serial to host
 #define VS1011_DREQ 2     // input: active high: decoder is ready for 32 bytes more data
 #define INTERRUPT 3
